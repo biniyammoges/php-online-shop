@@ -11,5 +11,6 @@
 - Add product to cart
 - Order product 
 - Select payment method
+- Place order
 
 ### Author - Biniyam Moges
