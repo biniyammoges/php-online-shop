@@ -151,6 +151,24 @@ header ul a.signup {
   color: #ffff;
   font-weight: 700;
 }
+header ul a.cart {
+  position: relative;
+}
+header ul a.cart i {
+  margin-right: 10px;
+}
+header ul a.cart span {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  background-color: #ff6825;
+  color: #ffff;
+  font-weight: 700;
+  border-radius: 50%;
+  text-align: center;
+  top: 2px;
+  left: 30px;
+}
 header ul a.logout {
   background-color: #3b405b;
   color: #ffff;

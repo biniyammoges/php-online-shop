@@ -34,7 +34,7 @@
           <a href="#">Products</a>
         </li>
         <li>
-          <a href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
+          <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i> <span>0</span> Cart</a>
         </li>
         <li>
           <a href="./login.php" class="signin"><i class="fas fa-power-off"></i> Login</a>
@@ -79,7 +79,7 @@
                 <div class="star"><i class="fas fa-star-half"></i></div>
               </div>
               <p>Price <span><?php echo $row['price'] ?>ETB</span></p>
-              <a href="#" class="order-btn"><i class="fas fa-shopping-cart"></i> Add to cart</a>
+              <a id="<?php echo $row['id'] ?>" name="<?php echo $row['name'] ?>" price="<?php echo $row['price'] ?>" image="<?php echo $row['image'] ?>" href="#" class="order-btn"><i class="fas fa-shopping-cart"></i> Add to cart</a>
             </div>
           </div>
         <?php
@@ -88,6 +88,7 @@
       </div>
     </div>
   </section>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>
