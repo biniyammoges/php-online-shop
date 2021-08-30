@@ -1,0 +1,54 @@
+.search {
+  margin: 2rem 0;
+
+  .card {
+    background-color: $white-color;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    height: 100%;
+  }
+
+  .card.flex {
+    // justify-content: flex-start;
+    height: 200px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  h1 {
+    color: $blue-black-color;
+  }
+
+  .rate {
+    color: $secondary-color;
+    margin: 8px 0;
+  }
+
+  .card-img {
+    width: 300px;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background-color: aqua;
+    border-radius: 10px;
+    align-self: flex-start;
+
+    img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      object-fit: cover;
+    }
+  }
+
+  .card-body {
+    margin-left: auto;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+}

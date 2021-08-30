@@ -1,0 +1,56 @@
+.login {
+  .container-f {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: $white-color;
+
+    & > div {
+      //   border: 1px solid lighten($black-color, 50%);
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 10px;
+      background-color: $white-color;
+
+      h1 {
+        color: $blue-black-color;
+        text-align: center;
+      }
+
+      p {
+        color: $black-color;
+        margin: 15px 0;
+      }
+
+      .divider {
+        .line {
+          background-color: lighten($black-color, 40%);
+          height: 2px;
+          width: 60px;
+        }
+
+        span {
+          color: $black-color;
+          margin: 0 10px;
+        }
+      }
+
+      .social-login {
+        a.google {
+          background-color: darken($secondary-color, 10%);
+          margin-right: 10px;
+          width: auto;
+          white-space: nowrap;
+        }
+
+        a.github {
+          background-color: darken($blue-black-color, 15%);
+          width: auto;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
