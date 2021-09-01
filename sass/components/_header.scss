@@ -19,6 +19,7 @@ header .search-form {
   overflow: hidden;
   height: 40px;
   background-color: $light-color;
+  margin: 0 2rem;
 
   input {
     display: inline !important;
@@ -92,7 +93,8 @@ header ul {
     }
 
     &.logout {
-      background-color: darken($blue-black-color, 20%);
+      // background-color: darken($blue-black-color, 20%);
+      background-color: $secondary-color;
       color: $white-color;
     }
 

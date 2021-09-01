@@ -31,18 +31,41 @@
       </form>
       <ul class="nav flex">
         <li>
-          <a href="#">Products</a>
+          <a href="./index.php">Products</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+          <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i>
+            <?php
+            if (isset($_SESSION['cart'])) {
+              $count = count($_SESSION['cart']);
+              echo "<span>$count</span>";
+            } else {
+              echo "<span>0</span>";
+            }
+            ?>
+            Cart</a>
         </li>
-        <li>
-          <a href="#" class="profile"><i class="fas fa-user-circle"></i><?php echo $_SESSION['name'] ?></a>
-        </li>
-        <li>
-          <a href="./logout.php" class="logout">
-            <i class="fas fa-sign-out-alt"></i>Logout</a>
-        </li>
+
+        <?php
+        if (isset($_SESSION['name'])) {
+          echo "
+                    <li>
+                    <a href='./order.php'>Orders</a>
+                </li>
+                    <li>
+                                <a href='#' class='profile'><i class='fas fa-user-circle'></i> $_SESSION[name]</a>
+                            </li><li>
+                            <a href='./logout.php' class='logout'><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        </li>";
+        } else {
+          echo           "<li>
+                    <a href='./login.php' class='signin'><i class='fas fa-power-off'></i> Login</a>
+                  </li>
+                  <li>
+                    <a href='./register.php' class='signup'>
+                      <i class='fas fa-plus'></i>Signup</a>
+                  </li>";
+        } ?>
       </ul>
     </div>
   </header>
@@ -57,7 +80,7 @@
 
     $res = $con->query($query);
 
-    $data = $res->fetch_assoc();
+    $data = $res->fetch_array();
   }
   ?>
   <section class="search">
@@ -91,6 +114,8 @@
       </div>
     </div>
   </section>
+  <script src="./js/mobile.js"></script>
+
 </body>
 
 </html>

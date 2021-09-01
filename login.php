@@ -32,6 +32,7 @@
           $data = $result->fetch_assoc();
           if ($data) {
             $_SESSION['name'] = $data['name'];
+            $_SESSION['id'] = $data['id'];
             header("Location: authenticated.php"); // Redirect user to index.php
           } else {
             echo "<div class='form'><p>Username or password is incorrect.</p></div>";

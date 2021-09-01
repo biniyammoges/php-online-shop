@@ -1,3 +1,17 @@
+<?php session_start();
+
+if (isset($_POST['remove'])) {
+    if ($_GET['action'] == 'remove') {
+        foreach ($_SESSION['cart'] as $key => $value) {
+            if ($value['product_id'] == $_GET['id']) {
+                unset($_SESSION['cart'][$key]);
+            }
+        }
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,18 +45,43 @@
             </form>
             <ul class="nav flex">
                 <li>
-                    <a href="#">Products</a>
+                    <a href="./index.php">Products</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i>
+                        <?php
+                        if (isset($_SESSION['cart'])) {
+                            $count = count($_SESSION['cart']);
+                            echo "<span>$count</span>";
+                        } else {
+                            echo "<span>0</span>";
+                        }
+                        ?>
+                        Cart</a>
                 </li>
-                <li>
-                    <a href="#" class="profile"><i class="fas fa-user-circle"></i><?php echo $_SESSION['name'] ?></a>
+
+                <?php
+                if (isset($_SESSION['name'])) {
+                    echo "
+                    <li>
+                    <a href='./order.php'>Orders</a>
                 </li>
-                <li>
-                    <a href="./logout.php" class="logout">
-                        <i class="fas fa-sign-out-alt"></i>Logout</a>
-                </li>
+                    <li>
+                                <a href='#' class='profile'><i class='fas fa-user-circle'></i> $_SESSION[name]</a>
+                            </li><li>
+                            <a href='./logout.php' class='logout'><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        </li>";
+                } else {
+                    echo           "<li>
+                    <a href='./login.php' class='signin'><i class='fas fa-power-off'></i> Login</a>
+                  </li>
+                  <li>
+                    <a href='./register.php' class='signup'>
+                      <i class='fas fa-plus'></i>Signup</a>
+                  </li>";
+                } ?>
+
+
             </ul>
         </div>
     </header>
@@ -51,68 +90,59 @@
     <section class="cart_sec">
         <div class="container">
             <h1>Shopping Cart</h1>
+            <?php
+            if ($count == 0) {
+                echo '<h4>Your cart is empty. please choose product</h4>';
+            }
+            ?>
             <div class="flex">
                 <div class="cart">
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <div class="qty flex">
-                            <button class="minus"><i class="fas fa-minus"></i></button>
-                            <span>2</span>
-                            <button class="plus"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <div class="qty flex">
-                            <button class="minus"><i class="fas fa-minus"></i></button>
-                            <span>2</span>
-                            <button class="plus"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <div class="qty flex">
-                            <button class="minus"><i class="fas fa-minus"></i></button>
-                            <span>2</span>
-                            <button class="plus"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <div class="qty flex">
-                            <button class="minus"><i class="fas fa-minus"></i></button>
-                            <span>2</span>
-                            <button class="plus"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
+                    <?php
+                    $query = 'select * from products';
+                    $result = $con->query($query);
+                    $product_id = array_column($_SESSION['cart'], 'product_id');
+                    $total = 0;
+                    $count = 0;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        foreach ($product_id as $id) {
+                            if ($row['id'] == $id) {
+                                $total = $total + $row['price'];
+                                $count = $count + 1;
+                                echo "                    <div class='cart-item flex'>
+                                <div class='cart-img'>
+                                    <img src='$row[image]' alt=''>
+                                </div>
+                                <div class='cart-detail'>
+                                    <h1>$row[name]</h1>
+                                    <p class='price'>$row[price]ETB</p>
+                                    <form action='cart.php?action=remove&id=$row[id]' method='POST'>
+                                    <button type='submit' name='remove' class='remove-cart'><i class='fas fa-trash'></i> Remove</button>
+                                    </form>
+                                </div>
+                                <div class='qty flex'>
+                                <span>1</span>
+                                </div>
+                                </div>";
+                            }
+                        }
+                    }
+
+                    ?>
+
+
                 </div>
                 <div class="checkout">
                     <div class="card">
                         <h1>Checkout</h1>
                         <p class="delivery">Delivery <span>FREE</span></p>
-                        <p class="price">total price <span>300ETB</span></p>
+                        <p class="price">total price ( <?php echo $count ?> items ) : <span><?php echo "$total ETB" ?></span></p>
                         <a href="./address.php" class="btn"><i class="fas fa-arrow-right"></i> Proceed </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script src="./js/mobile.js"></script>
 
 </body>
 

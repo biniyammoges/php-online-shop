@@ -1,3 +1,16 @@
+<?php
+session_start();
+if (isset($_POST['submit'])) {
+    $_SESSION['address'] = $_POST['address'];
+    $_SESSION['phone'] = $_POST['phone'];
+    $_SESSION['block'] = $_POST['block'];
+    $_SESSION['dorm'] = $_POST['dorm'];
+    header("Location: payment.php");
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +22,7 @@
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./css/all.css" />
 </head>
-
+<?php require('./auth.php') ?>
 
 <body>
     <header>
@@ -30,10 +43,22 @@
             </form>
             <ul class="nav flex">
                 <li>
-                    <a href="#">Products</a>
+                    <a href="./index.php">Products</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a href="./order.php">Orders</a>
+                </li>
+                <li>
+                    <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i>
+                        <?php
+                        if (isset($_SESSION['cart'])) {
+                            $count = count($_SESSION['cart']);
+                            echo "<span>$count</span>";
+                        } else {
+                            echo "<span>0</span>";
+                        }
+                        ?>
+                        Cart</a>
                 </li>
                 <li>
                     <a href="#" class="profile"><i class="fas fa-user-circle"></i><?php echo $_SESSION['name'] ?></a>
@@ -51,30 +76,39 @@
                 <h1><i class="fas fa-map-marker-alt"></i> Your Address</h1>
 
 
-                <form action="./payment.php" method="POST">
+                <form action="address.php" method="POST">
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input id="address" name="address" type="address" placeholder="Enter address" required />
+                        <input id="address" name="address" type="address" placeholder="Enter address" value="<?php if ($_SESSION['address']) {
+                                                                                                                    echo $_SESSION['address'];
+                                                                                                                } ?>" required />
                     </div>
                     <div class="form-group">
                         <label for="email">Phone</label>
-                        <input id="tel" name="phone" type="number" placeholder="Enter Phone" required />
+                        <input id="tel" name="phone" type="number" placeholder="Enter Phone" value="<?php if ($_SESSION['phone']) {
+                                                                                                        echo $_SESSION['phone'];
+                                                                                                    } ?>" required />
                     </div>
                     <div class="form-group">
                         <label for="block">Block number</label>
-                        <input id="block" name="block" type="number" placeholder="Enter block" required />
+                        <input id="block" name="block" type="number" placeholder="Enter block" value="<?php if ($_SESSION['block']) {
+                                                                                                            echo $_SESSION['block'];
+                                                                                                        } ?>" required />
                     </div>
                     <div class="form-group">
                         <label for="dorm">Dorm number</label>
-                        <input id="dorm" name="dorm" type="number" placeholder="Enter dorm" required />
+                        <input id="dorm" name="dorm" type="number" placeholder="Enter dorm" value="<?php if ($_SESSION['dorm']) {
+                                                                                                        echo $_SESSION['dorm'];
+                                                                                                    } ?>" required />
                     </div>
 
-                    <button type="submit" name="register" class="btn-b"><i class="fas fa-arrow-right"></i> Continue</button>
+                    <button type="submit" name="submit" class="btn-b"><i class="fas fa-arrow-right"></i> Continue</button>
                 </form>
 
             </div>
         </div>
     </div>
+    <script src="./js/mobile.js"></script>
 </body>
 
 </html>

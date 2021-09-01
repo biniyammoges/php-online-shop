@@ -55,7 +55,14 @@
         font-weight: 500;
       }
 
+      form {
+        margin: 5px 0;
+      }
+
       .order-btn {
+        cursor: pointer;
+        border: none;
+        outline: none;
         padding: 8px 15px;
         display: inline-block;
         background-color: $primary-color;

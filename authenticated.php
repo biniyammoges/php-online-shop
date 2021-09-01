@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+function array_column_manual($array, $column)
+{
+  $newarr = array();
+  foreach ($array as $row) $newarr[] = $row[$column];
+  return $newarr;
+}
+
+if (isset($_POST['add'])) {
+  if (isset($_SESSION['cart'])) {
+    $item_array_id = array_column_manual($_SESSION['cart'], "product_id");
+    if (in_array($_POST['product_id'], $item_array_id)) {
+      echo '<script> alert("product already exist in cart") </script>';
+      echo '<script> window.location = "index.php" </script>';
+    } else {
+      $count = count($_SESSION['cart']);
+      $item_array = array('product_id' => $_POST['product_id']);
+      $_SESSION['cart'][$count] = $item_array;
+    }
+  } else {
+    $item_array = array('product_id' => $_POST['product_id']);
+    $_SESSION['cart'][0] = $item_array;
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +63,16 @@
           <a href="#">Products</a>
         </li>
         <li>
-          <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i> <span>0</span> Cart</a>
+          <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i>
+            <?php
+            if (isset($_SESSION['cart'])) {
+              $count = count($_SESSION['cart']);
+              echo "<span>$count</span>";
+            } else {
+              echo "<span>0</span>";
+            }
+            ?>
+            Cart</a>
         </li>
         <li>
           <a href="./order.php">Orders</a>
@@ -81,7 +119,10 @@
                 <div class="star"><i class="fas fa-star-half"></i></div>
               </div>
               <p>Price <span><?php echo $row['price'] ?>ETB</span></p>
-              <a id="<?php echo $row['id'] ?>" name="<?php echo $row['name'] ?>" price="<?php echo $row['price'] ?>" image="<?php echo $row['image'] ?>" href="#" class="order-btn"><i class="fas fa-shopping-cart"></i> Add to cart</a>
+              <form id="add-to-cart" method="POST">
+                <input type="hidden" name="product_id" value="<?php echo $row['id'] ?>">
+                <button type="submit" class="order-btn" name="add"><i class="fas fa-shopping-cart"></i> Add to cart</button>
+              </form>
             </div>
           </div>
         <?php
@@ -90,7 +131,8 @@
       </div>
     </div>
   </section>
-  <script src="./js/main.js"></script>
+  <script src="./js/mobile.js"></script>
+  <!-- <script src="./js/main.js"></script> -->
 </body>
 
 </html>

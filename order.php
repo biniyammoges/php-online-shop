@@ -13,6 +13,7 @@
 
 <body>
     <?php require('./auth.php') ?>
+    <?php require('./db.php') ?>
     <header>
         <div class="container flex">
             <a href="#" class="menu-bar">
@@ -22,7 +23,7 @@
                     <rect y="12" width="24" height="3" rx="1.5" fill="#C4C4C4" />
                 </svg>
             </a>
-            <a href="#" class="nav-brand">
+            <a href="./authenticated.php" class="nav-brand">
                 <img src="./assets/astu-logo.svg" alt="logo" />
             </a>
             <form class="search-form flex" method="POST" action="./search.php">
@@ -31,10 +32,19 @@
             </form>
             <ul class="nav flex">
                 <li>
-                    <a href="#">Products</a>
+                    <a href="./index.php">Products</a>
                 </li>
                 <li>
-                    <a href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a class="cart" href="./cart.php"><i class="fas fa-shopping-cart"></i>
+                        <?php
+                        if (isset($_SESSION['cart'])) {
+                            $count = count($_SESSION['cart']);
+                            echo "<span>$count</span>";
+                        } else {
+                            echo "<span>0</span>";
+                        }
+                        ?>
+                        Cart</a>
                 </li>
                 <li>
                     <a href="./order.php">Orders</a>
@@ -54,53 +64,44 @@
         <div class="container">
             <h1>Recently ordered products</h1>
             <div class="orders">
-                <div class="cart">
-                    <div class="cart-item flex">
-                        <h1>Image</h1>
-                        <h1>name</h1>
-                        <h1>Price</h1>
-                        <h1>Ordered Date</h1>
-                        <h1>Delivery Status</h1>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <p>12-04-2021</p>
-                        <p class="status"><i class="fas fa-check"></i></p>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <p>12-04-2021</p>
-                        <p class="status"><i class="fas fa-check"></i></p>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <p>12-04-2021</p>
-                        <p class="status"><i class="fas fa-check"></i></p>
-                    </div>
-                    <div class="cart-item flex">
-                        <div class="cart-img">
-                            <img src="./assets/atikilt.jpg" alt="">
-                        </div>
-                        <h1>Atikilt</h1>
-                        <p class="price">70ETB</p>
-                        <p>12-04-2021</p>
-                        <p class="status"><i class="fas fa-check"></i></p>
-                    </div>
-                </div>
+                <table>
+                    <tr>
+                        <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                        <th>Dorm</th>
+                        <th><i class="fas fa-bed"></i> Room</th>
+                        <th><i class="fas fa-phone"></i> Phone</th>
+                        <th><i class="fas fa-dollar-sign"></i> Payment</th>
+                        <th><i class="fas fa-clock"></i> Ordered_date</th>
+                        <th>Status</th>
+                    </tr>
+                    <?php
+                    $user_id = $_SESSION['id'];
+                    $sql = "select * from orders, user where orders.user_id = user.id and user.id = $user_id";
+
+                    $result = $con->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array()) {
+                            echo   "<tr>
+                            <td>$row[address]</td>
+                            <td>$row[block]</td>
+                            <td>$row[dorm]</td>
+                            <td>+251$row[phone]</td>
+                            <td>$row[payment_method]</td>
+                        <td>$row[date]</td>
+                        <td class='status'> <span><i class='fas fa-check'></i></span></td>
+                    </tr>";
+                        }
+                    } else {
+                        echo "Error: " . $sql . "<br>" . $con->error;
+                    }
+
+                    ?>
+
+                </table>
             </div>
     </section>
+    <script src="./js/mobile.js"></script>
+
 </body>
 
 </html>

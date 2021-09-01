@@ -41,6 +41,7 @@
 
             if ($result) {
               $_SESSION['name'] = $name;
+              $_SESSION['id'] = $data['id'];
               header("Location: authenticated.php"); // Redirect user to authenticated.php
             }
           }
